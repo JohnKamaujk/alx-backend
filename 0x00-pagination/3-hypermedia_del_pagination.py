@@ -1,18 +1,8 @@
 #!/usr/bin/env python3
-"""Simple pagination module.
+"""Deletion-resilient hypermedia pagination
 """
-
 import csv
-import math
-from typing import List, Tuple, Dict
-
-
-def index_range(page: int, page_size: int) -> Tuple[int, int]:
-    """Retrieves the index range from a given page and page size.
-    """
-    start_idx = (page - 1) * page_size
-    end_idx = start_idx + page_size
-    return (start_idx, end_idx)
+from typing import Dict, List
 
 
 class Server:
@@ -21,7 +11,10 @@ class Server:
     DATA_FILE = "Popular_Baby_Names.csv"
 
     def __init__(self):
+        """Initializes a new Server instance.
+        """
         self.__dataset = None
+        self.__indexed_dataset = None
 
     def dataset(self) -> List[List]:
         """Cached dataset
@@ -49,20 +42,24 @@ class Server:
         """Retrieves info about a page from a given index and with a
         specified size.
         """
-        assert isinstance(index, int)
-        assert 0 <= index < len(self.__indexed_dataset)
-        assert isinstance(page_size, int) and page_size > 0
-
-        start_index, end_index = index_range(index, page_size)
-        next_index = end_index
-
-        data_page = [self.__indexed_dataset[i] for i in range
-                     (start_index, end_index)
-                     if i in self.__indexed_dataset]
-
-        return {
-            "index": index,
-            "next_index": next_index,
-            "page_size": len(data_page),
-            "data": data_page,
+        data = self.indexed_dataset()
+        assert index is not None and index >= 0 and index <= max(data.keys())
+        page_data = []
+        data_count = 0
+        next_index = None
+        start = index if index else 0
+        for i, item in data.items():
+            if i >= start and data_count < page_size:
+                page_data.append(item)
+                data_count += 1
+                continue
+            if data_count == page_size:
+                next_index = i
+                break
+        page_info = {
+            'index': index,
+            'next_index': next_index,
+            'page_size': len(page_data),
+            'data': page_data,
         }
+        return page_info
