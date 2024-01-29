@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Simple pagination sample.
+"""Simple pagination module.
 """
 
 import csv
@@ -35,6 +35,8 @@ class Server:
         return self.__dataset
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
+        """Retrieves page data.
+        """
         assert isinstance(page, int) and page > 0
         assert isinstance(page_size, int) and page_size > 0
 
