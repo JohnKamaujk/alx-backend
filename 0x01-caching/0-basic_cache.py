@@ -1,13 +1,12 @@
 #!/usr/bin/python3
-""" BaseCache module
+""" BaseCache module.
 """
 from base_caching import BaseCaching
 
 
-class BaseCache(BaseCaching):
-    """ BaseCache defines:
-      - your caching system
-      - where your data are stored (in a dictionary)
+class BasicCache(BaseCaching):
+    """Represents an object that allows storing and
+    retrieving items from a dictionary.
     """
 
     def put(self, key, item):
