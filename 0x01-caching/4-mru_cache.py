@@ -17,7 +17,7 @@ class MRUCache(BaseCaching):
         self.cache_data = OrderedDict()
 
     def put(self, key, item):
-        """Adds an item in the cache.
+        """Add an item in the cache.
         """
         if key is None or item is None:
             return
