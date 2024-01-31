@@ -5,7 +5,7 @@ from collections import OrderedDict
 from base_caching import BaseCaching
 
 
-class FIFOCache(BaseCaching):
+class LIFOCache(BaseCaching):
     """Represents an cache mecanism that allows storing and
     retrieving items from a dictionary with a LIFO
     removal mechanism when limit is reached.
