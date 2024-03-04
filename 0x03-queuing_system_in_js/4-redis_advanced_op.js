@@ -2,8 +2,8 @@ import redis from 'redis';
 
 const client = redis.createClient();
 
-client.on('error', (error) => {
-  console.error('Redis client error:', error);
+client.on('error', (err) => {
+  console.error(`Redis client not connected to the server: ${err}`);
 });
 
 // Create Hash function with object
